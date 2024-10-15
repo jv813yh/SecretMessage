@@ -4,11 +4,25 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SecretMessage.WPF"
+        xmlns:views="clr-namespace:SecretMessage.WPF.Views"
+        xmlns:viewModels="clr-namespace:SecretMessage.WPF.ViewModels"
         mc:Ignorable="d"
         Title="Secret Message" 
         Height="450"
-        Width="800">
+        Width="800"
+        MaxWidth="1000"
+        MinWidth="400"
+        MinHeight="450"
+        Icon="/Images/secretMessage.png">
+    
     <Grid>
 
+        <ContentControl Content="{Binding CurrentViewModel}">
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type viewModels:RegisterViewModel}">
+                    <views:RegisterView/>
+                </DataTemplate>
+            </ContentControl.Resources>
+        </ContentControl>
     </Grid>
 </Window>

@@ -2,6 +2,10 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MVVMEssentials.Services;
+using MVVMEssentials.Stores;
+using MVVMEssentials.ViewModels;
+using SecretMessage.WPF.ViewModels;
 using System.Windows;
 
 namespace SecretMessage.WPF
@@ -28,13 +32,31 @@ namespace SecretMessage.WPF
                     }
 
                     services.AddSingleton(new FirebaseAuthProvider(new FirebaseConfig(_firebaseApiKey)));
-                    services.AddSingleton(new MainWindow());
+
+                    services.AddSingleton<NavigationStore>();
+                    services.AddSingleton<ModalNavigationStore>();
+
+                    services.AddSingleton<NavigationService<RegisterViewModel>>(
+                        (services) => new NavigationService<RegisterViewModel>(
+                            services.GetRequiredService<NavigationStore>(),
+                            () => new RegisterViewModel(
+                                services.GetRequiredService<FirebaseAuthProvider>())));
+
+                    services.AddSingleton<MainViewModel>();
+
+                    services.AddSingleton<MainWindow>((services) => new MainWindow()
+                    {
+                        DataContext = services.GetRequiredService<MainViewModel>()
+                    }); 
                 })
                 .Build();
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            INavigationService navigationService = _host.Services.GetRequiredService<NavigationService<RegisterViewModel>>();
+            navigationService.Navigate();
+
             MainWindow = _host.Services.GetRequiredService<MainWindow>();
 
             MainWindow.Show();
