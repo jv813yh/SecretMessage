@@ -81,6 +81,7 @@
                     Command="{Binding SubmitCommand}"
                     Margin="10,15,10,10"
                     Width="60"
+                    IsDefault="True"
                     Height="30"
                     Cursor="Hand"
                     Content="Submit"/>
@@ -89,13 +90,10 @@
                     Command="{Binding NavigateLoginCommand}"
                     Margin="5"
                     Width="240"
-                    Background="Transparent"
-                    FontWeight="ExtraBlack"
-                    FontSize="14"
                     Height="30"
-                    BorderThickness="0"
-                    Cursor="ArrowCD"
-                    Content="Already have an account ? Login"/>
+                    Content="Already have an account ? Login"
+                    Background="Transparent"
+                    Style="{StaticResource TransparentButton}"/>
 
         </Grid>
 

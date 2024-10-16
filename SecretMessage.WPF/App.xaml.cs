@@ -40,7 +40,16 @@ namespace SecretMessage.WPF
                         (services) => new NavigationService<RegisterViewModel>(
                             services.GetRequiredService<NavigationStore>(),
                             () => new RegisterViewModel(
-                                services.GetRequiredService<FirebaseAuthProvider>())));
+                                services.GetRequiredService<FirebaseAuthProvider>(),
+                                services.GetRequiredService<NavigationService<LoginViewModel>>(),
+                                services.GetRequiredService<NavigationService<LoginViewModel>>())));
+
+                    services.AddSingleton<NavigationService<LoginViewModel>>(
+                        (services) => new NavigationService<LoginViewModel>(
+                            services.GetRequiredService<NavigationStore>(),
+                            () => new LoginViewModel(
+                                services.GetRequiredService<FirebaseAuthProvider>(),
+                                services.GetRequiredService<NavigationService<RegisterViewModel>>())));
 
                     services.AddSingleton<MainViewModel>();
 
@@ -54,7 +63,7 @@ namespace SecretMessage.WPF
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            INavigationService navigationService = _host.Services.GetRequiredService<NavigationService<RegisterViewModel>>();
+            INavigationService navigationService = _host.Services.GetRequiredService<NavigationService<LoginViewModel>>();
             navigationService.Navigate();
 
             MainWindow = _host.Services.GetRequiredService<MainWindow>();
