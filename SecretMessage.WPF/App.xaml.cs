@@ -5,6 +5,7 @@ using Microsoft.Extensions.Hosting;
 using MVVMEssentials.Services;
 using MVVMEssentials.Stores;
 using MVVMEssentials.ViewModels;
+using SecretMessage.WPF.Stores;
 using SecretMessage.WPF.ViewModels;
 using System.Windows;
 
@@ -36,6 +37,10 @@ namespace SecretMessage.WPF
                     services.AddSingleton<NavigationStore>();
                     services.AddSingleton<ModalNavigationStore>();
 
+                    services.AddSingleton<AuthenticationStore>(
+                        (services) => new AuthenticationStore(
+                            services.GetRequiredService<FirebaseAuthProvider>()));
+
                     services.AddSingleton<NavigationService<RegisterViewModel>>(
                         (services) => new NavigationService<RegisterViewModel>(
                             services.GetRequiredService<NavigationStore>(),
@@ -48,8 +53,15 @@ namespace SecretMessage.WPF
                         (services) => new NavigationService<LoginViewModel>(
                             services.GetRequiredService<NavigationStore>(),
                             () => new LoginViewModel(
-                                services.GetRequiredService<FirebaseAuthProvider>(),
-                                services.GetRequiredService<NavigationService<RegisterViewModel>>())));
+                                services.GetRequiredService<AuthenticationStore>(),
+                                services.GetRequiredService<NavigationService<RegisterViewModel>>(),
+                                services.GetRequiredService<NavigationService<HomeViewModel>>())));
+
+                    services.AddSingleton<NavigationService<HomeViewModel>>(
+                        (services) => new NavigationService<HomeViewModel>(
+                            services.GetRequiredService<NavigationStore>(),
+                            () => new HomeViewModel(
+                                services.GetRequiredService<AuthenticationStore>())));
 
                     services.AddSingleton<MainViewModel>();
 
