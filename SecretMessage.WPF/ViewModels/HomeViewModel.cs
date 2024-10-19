@@ -1,5 +1,8 @@
 ﻿using MVVMEssentials.ViewModels;
+using SecretMessage.WPF.Commands;
+using SecretMessage.WPF.Queries;
 using SecretMessage.WPF.Stores;
+using System.Windows.Input;
 
 namespace SecretMessage.WPF.ViewModels
 {
@@ -9,9 +12,30 @@ namespace SecretMessage.WPF.ViewModels
         public string Username 
             => _authenticationStore.User?.DisplayName ?? "Unknown";
 
-        public HomeViewModel(AuthenticationStore authenticationStore)
+        private string _secretMessage;
+        public string SecretMessage 
+        {
+            get => _secretMessage;
+            set
+            {
+                _secretMessage = value;
+                OnPropertyChanged(nameof(SecretMessage));
+            }
+        }
+
+        public ICommand LoadSecretMessageCommand { get; }
+        public HomeViewModel(AuthenticationStore authenticationStore, IGetSecretMessageQuery getSecretMessageQuery)
         {
             _authenticationStore = authenticationStore;
+            LoadSecretMessageCommand = new LoadSecretMessageCommand(this, getSecretMessageQuery);
+        }
+
+        public static HomeViewModel LoadHomeViewModel(AuthenticationStore authenticationStore, IGetSecretMessageQuery getSecretMessageQuery)
+        {
+            HomeViewModel returnHomeViewModel = new HomeViewModel(authenticationStore, getSecretMessageQuery);
+            returnHomeViewModel.LoadSecretMessageCommand.Execute(null);
+
+            return returnHomeViewModel;
         }
     }
 }

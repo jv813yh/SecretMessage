@@ -5,6 +5,9 @@ using Microsoft.Extensions.Hosting;
 using MVVMEssentials.Services;
 using MVVMEssentials.Stores;
 using MVVMEssentials.ViewModels;
+using Refit;
+using SecretMessage.WPF.Http;
+using SecretMessage.WPF.Queries;
 using SecretMessage.WPF.Stores;
 using SecretMessage.WPF.ViewModels;
 using System.Windows;
@@ -32,7 +35,22 @@ namespace SecretMessage.WPF
                         throw new Exception("Firebase API Key is missing");
                     }
 
+                    // Get the base url for the SecretMessage API
+                    string? secretMessageApiBaseUrl = context.Configuration.GetValue<string>("SECRET_MESSAGE_API_BASE_URL");
+                    if (string.IsNullOrWhiteSpace(secretMessageApiBaseUrl))
+                    {
+                        throw new Exception("Secret Message API Base URL is missing");
+                    }
+
+                    services.AddTransient<FirebaseAuthHttpMessageHandler>();
+
                     services.AddSingleton(new FirebaseAuthProvider(new FirebaseConfig(_firebaseApiKey)));
+
+                    // Register the Refit client for the SecretMessage API
+                    services.AddRefitClient<IGetSecretMessageQuery>()
+                        .ConfigureHttpClient(c => c.BaseAddress = new Uri(secretMessageApiBaseUrl))
+                        .AddHttpMessageHandler<FirebaseAuthHttpMessageHandler>();
+
 
                     services.AddSingleton<NavigationStore>();
                     services.AddSingleton<ModalNavigationStore>();
@@ -41,6 +59,7 @@ namespace SecretMessage.WPF
                         (services) => new AuthenticationStore(
                             services.GetRequiredService<FirebaseAuthProvider>()));
 
+                    // Set DI for RegisterViewModel
                     services.AddSingleton<NavigationService<RegisterViewModel>>(
                         (services) => new NavigationService<RegisterViewModel>(
                             services.GetRequiredService<NavigationStore>(),
@@ -49,6 +68,7 @@ namespace SecretMessage.WPF
                                 services.GetRequiredService<NavigationService<LoginViewModel>>(),
                                 services.GetRequiredService<NavigationService<LoginViewModel>>())));
 
+                    // Set DI for LoginViewModel
                     services.AddSingleton<NavigationService<LoginViewModel>>(
                         (services) => new NavigationService<LoginViewModel>(
                             services.GetRequiredService<NavigationStore>(),
@@ -57,11 +77,13 @@ namespace SecretMessage.WPF
                                 services.GetRequiredService<NavigationService<RegisterViewModel>>(),
                                 services.GetRequiredService<NavigationService<HomeViewModel>>())));
 
+                    // Set DI for HomeViewModel
                     services.AddSingleton<NavigationService<HomeViewModel>>(
                         (services) => new NavigationService<HomeViewModel>(
                             services.GetRequiredService<NavigationStore>(),
-                            () => new HomeViewModel(
-                                services.GetRequiredService<AuthenticationStore>())));
+                            () => HomeViewModel.LoadHomeViewModel(
+                                services.GetRequiredService<AuthenticationStore>(),
+                                services.GetRequiredService<IGetSecretMessageQuery>())));
 
                     services.AddSingleton<MainViewModel>();
 

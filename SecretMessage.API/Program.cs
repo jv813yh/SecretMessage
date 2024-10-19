@@ -1,9 +1,8 @@
 using FirebaseAdmin;
-using Google.Apis.Auth.OAuth2;
 using FirebaseAdminAuthentication.DependencyInjection.Extensions;
-using System.Security.Claims;
+using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authorization;
-using SecretMessage.API.Responses;
+using SecretMessage.Core;
 
 namespace SecretMessage.API
 {
@@ -35,7 +34,7 @@ namespace SecretMessage.API
             // Minimal endpoint with authentication user 
             app.MapGet("/", [Authorize] () =>
             {
-                return Results.Json(new SecretMessageResponse() { SecretMessage = "Firebase is really cool 123." });
+                return Results.Json(new SecretMessageResponse() { SecretMessage = "You are authenticate or ?" });
             });
 
 

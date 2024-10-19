@@ -1,4 +1,4 @@
-﻿namespace SecretMessage.API.Responses
+﻿namespace SecretMessage.Core
 {
     public class SecretMessageResponse
     {

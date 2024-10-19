@@ -17,22 +17,26 @@
     
     <Grid>
 
-        <ContentControl Content="{Binding CurrentViewModel}">
-            <ContentControl.Resources>
+        <ScrollViewer
+            VerticalScrollBarVisibility="Auto"
+            HorizontalScrollBarVisibility="Auto">
+            <ContentControl Content="{Binding CurrentViewModel}">
+                <ContentControl.Resources>
                 
-                <DataTemplate DataType="{x:Type viewModels:RegisterViewModel}">
-                    <views:RegisterView/>
-                </DataTemplate>
+                    <DataTemplate DataType="{x:Type viewModels:RegisterViewModel}">
+                        <views:RegisterView/>
+                    </DataTemplate>
                 
-                <DataTemplate DataType="{x:Type viewModels:LoginViewModel}">
-                    <views:LoginView/>
-                </DataTemplate>
+                    <DataTemplate DataType="{x:Type viewModels:LoginViewModel}">
+                        <views:LoginView/>
+                    </DataTemplate>
 
-                <DataTemplate DataType="{x:Type viewModels:HomeViewModel}">
-                    <views:HomeView/>
-                </DataTemplate>
+                    <DataTemplate DataType="{x:Type viewModels:HomeViewModel}">
+                        <views:HomeView/>
+                    </DataTemplate>
 
-            </ContentControl.Resources>
-        </ContentControl>
+                </ContentControl.Resources>
+            </ContentControl>
+        </ScrollViewer>
     </Grid>
 </Window>
