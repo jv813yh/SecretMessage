@@ -89,7 +89,6 @@ namespace SecretMessage.WPF
 
 
                     services.AddSingleton<MainViewModel>();
-
                     services.AddSingleton<MainWindow>((services) => new MainWindow()
                     {
                         DataContext = services.GetRequiredService<MainViewModel>()
@@ -98,16 +97,47 @@ namespace SecretMessage.WPF
                 .Build();
         }
 
-        protected override void OnStartup(StartupEventArgs e)
+        protected override async void OnStartup(StartupEventArgs e)
         {
-            INavigationService navigationService = _host.Services.GetRequiredService<NavigationService<LoginViewModel>>();
-            navigationService.Navigate();
+            await InitializeAppAsync();
 
             MainWindow = _host.Services.GetRequiredService<MainWindow>();
 
             MainWindow.Show();
 
             base.OnStartup(e);
+        }
+
+        private async Task InitializeAppAsync()
+        {
+            try
+            {
+                // Get the AuthenticationStore from the DI container
+                AuthenticationStore authStore = _host.Services.GetRequiredService<AuthenticationStore>();
+                // Initialize the AuthenticationStore
+                await authStore.InitializeAsync();
+
+                if (authStore.IsLoggedIn)
+                {
+                    INavigationService navigationService = _host.Services.GetRequiredService<NavigationService<HomeViewModel>>();
+                    navigationService.Navigate();
+                }
+                else
+                {
+                    INavigationService navigationService = _host.Services.GetRequiredService<NavigationService<LoginViewModel>>();
+                    navigationService.Navigate();
+                }
+            }
+            catch (FirebaseAuthException)
+            {
+                INavigationService navigationService = _host.Services.GetRequiredService<NavigationService<LoginViewModel>>();
+                navigationService.Navigate();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Failed to load application", "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

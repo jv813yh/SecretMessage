@@ -34,7 +34,7 @@ namespace SecretMessage.API
             // Minimal endpoint with authentication user 
             app.MapGet("/", [Authorize] () =>
             {
-                return Results.Json(new SecretMessageResponse() { SecretMessage = "You are authenticate or ?" });
+                return Results.Json(new SecretMessageResponse() { SecretMessage = "Firebase is really great !!!" });
             });
 
 

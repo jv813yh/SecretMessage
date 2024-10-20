@@ -17,12 +17,14 @@ namespace SecretMessage.WPF.Http
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             // Get the Firebase token from the AuthenticationStore
-            FirebaseAuthLink? firebaseAuthLink = await _authenticationStore.GetFreshAuthAsync();
+            await _authenticationStore.UpdateFreshAuthAsync();
 
-            if(firebaseAuthLink != null)
+            string? firebaseToken = _authenticationStore.GetFirebaseToken();
+
+            if(firebaseToken != null)
             {
                 // Add the Firebase token to the request
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", firebaseAuthLink.FirebaseToken);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", firebaseToken);
             }
 
             return await base.SendAsync(request, cancellationToken);
