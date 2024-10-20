@@ -20,7 +20,6 @@ namespace SecretMessage.WPF
     public partial class App : Application
     {
         private readonly IHost _host;
-        private string? _firebaseApiKey;
 
         public App()
         {
@@ -29,7 +28,7 @@ namespace SecretMessage.WPF
                 .ConfigureServices((context, services) =>
                 {
                     // Get the Firebase API Key from the configuration file
-                    _firebaseApiKey = context.Configuration.GetValue<string>("FIREBASE_API_KEY");
+                    string? _firebaseApiKey = context.Configuration.GetValue<string>("FIREBASE_API_KEY");
                     if (string.IsNullOrWhiteSpace(_firebaseApiKey))
                     {
                         throw new Exception("Firebase API Key is missing");
@@ -52,6 +51,7 @@ namespace SecretMessage.WPF
                         .ConfigureHttpClient(c => c.BaseAddress = new Uri(secretMessageApiBaseUrl))
                         .AddHttpMessageHandler<FirebaseAuthHttpMessageHandler>();
 
+                    // Register states 
                     services.AddSingleton<NavigationStore>();
                     services.AddSingleton<ModalNavigationStore>();
 
@@ -75,7 +75,8 @@ namespace SecretMessage.WPF
                             () => new LoginViewModel(
                                 services.GetRequiredService<AuthenticationStore>(),
                                 services.GetRequiredService<NavigationService<RegisterViewModel>>(),
-                                services.GetRequiredService<NavigationService<HomeViewModel>>())));
+                                services.GetRequiredService<NavigationService<HomeViewModel>>(),
+                                services.GetRequiredService<NavigationService<PasswordResetViewModel>>())));
 
                     // Set DI for HomeViewModel
                     services.AddSingleton<NavigationService<HomeViewModel>>(
@@ -86,6 +87,13 @@ namespace SecretMessage.WPF
                                 services.GetRequiredService<IGetSecretMessageQuery>(),
                                 services.GetRequiredService<NavigationService<LoginViewModel>>())));
 
+                    // Set DI for PasswordResetViewModel    
+                    services.AddSingleton<NavigationService<PasswordResetViewModel>>(
+                        (services) => new NavigationService<PasswordResetViewModel>(
+                            services.GetRequiredService<NavigationStore>(),
+                            () => new PasswordResetViewModel(
+                                services.GetRequiredService<FirebaseAuthProvider>(),
+                                services.GetRequiredService<NavigationService<LoginViewModel>>())));
 
 
                     services.AddSingleton<MainViewModel>();

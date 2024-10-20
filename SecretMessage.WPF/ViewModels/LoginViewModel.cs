@@ -35,13 +35,16 @@ namespace SecretMessage.WPF.ViewModels
         public ICommand LoginCommand { get; }
 
         public ICommand NavigateRegisterCommand { get; }
+        public ICommand NavigateResetPasswordCommand { get; }
 
         public LoginViewModel(AuthenticationStore authenticationStore, 
                               NavigationService<RegisterViewModel> registerViewModelNavigation,
-                              NavigationService<HomeViewModel> homeViewModelNavigation)
+                              NavigationService<HomeViewModel> homeViewModelNavigation,
+                              NavigationService<PasswordResetViewModel> passwordResetViewModelNavigation)
         {
             LoginCommand = new LoginCommand(this, authenticationStore, homeViewModelNavigation);
             NavigateRegisterCommand = new NavigateCommand(registerViewModelNavigation);
+            NavigateResetPasswordCommand = new NavigateCommand(passwordResetViewModelNavigation);
         }
     }
 }

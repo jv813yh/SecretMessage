@@ -30,6 +30,7 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
 
@@ -37,7 +38,7 @@
                         Margin="10"
                         Orientation="Horizontal">
                 <TextBlock Text="Email"
-                           Margin="100,0,85,0"/>
+                           Margin="100,0,80,0"/>
                 <TextBox Width="120"
                          Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
                          Height="25"/>
@@ -47,7 +48,7 @@
                          Margin="10"
                          Orientation="Horizontal">
                 <TextBlock Text="Password"
-                            Margin="100,0,65,0"/>
+                            Margin="100,0,60,0"/>
                 <passwordBox:BindablePasswordBox
                              Password="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
                              Width="120"
@@ -64,14 +65,28 @@
                     Cursor="Hand"
                     Content="Submit"/>
 
+
             <Button Grid.Row="3"
+                   Command="{Binding NavigateResetPasswordCommand}"
+                   Margin="5"
+                   Width="240"
+                   Height="30"
+                   Content="Forgot password ? Reset">
+                <Button.Style>
+                    <Style BasedOn="{StaticResource TransparentButton}" TargetType="Button">
+                        <Setter Property="Foreground" Value="Blue"/>
+                        <Setter Property="FontWeight" Value="Light"/>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <Button Grid.Row="4"
                 Command="{Binding NavigateRegisterCommand}"
                 Margin="5"
                 Width="240"
                 Height="30"
                 Content="Need an account ? Register"
                 Style="{StaticResource TransparentButton}"/>
-
 
         </Grid>
         

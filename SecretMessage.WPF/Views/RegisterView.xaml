@@ -35,30 +35,30 @@
 
 
             <StackPanel Grid.Row="0"
-                        Margin="10"
+                        Margin="80,10,10,10"
                         Orientation="Horizontal">
                 <TextBlock Text="Email"
-                           Margin="40,0,85,0"/>
+                           Margin="40,0,77,0"/>
                 <TextBox Width="120"
                          Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
                          Height="25"/>
             </StackPanel>
 
             <StackPanel Grid.Row="1"
-                        Margin="10"
+                        Margin="80,10,10,10"
                         Orientation="Horizontal">
                 <TextBlock Text="Username"
-                           Margin="40,0,60,0"/>
+                           Margin="40,0,52,0"/>
                 <TextBox  Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
                           Width="120"
                           Height="25"/>
             </StackPanel>
 
             <StackPanel Grid.Row="2"
-                        Margin="10"
+                        Margin="80,10,10,10"
                         Orientation="Horizontal">
                 <TextBlock Text="Password"
-                           Margin="40,0,65,0"/>
+                           Margin="40,0,55,0"/>
                 <passwordBox:BindablePasswordBox
                         Password="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
                         Width="120"
@@ -66,10 +66,10 @@
             </StackPanel>
 
             <StackPanel Grid.Row="3"
-                        Margin="10"
+                        Margin="80,10,10,10"
                         Orientation="Horizontal">
                 <TextBlock Text="Confirm Password"
-                           Margin="40,0,20,0"/>
+                           Margin="40,0,10,0"/>
                 <passwordBox:BindablePasswordBox
                         Width="120"
                         Password="{Binding ConfirmPassword, UpdateSourceTrigger=PropertyChanged}"

@@ -35,6 +35,10 @@
                         <views:HomeView/>
                     </DataTemplate>
 
+                    <DataTemplate DataType="{x:Type viewModels:PasswordResetViewModel}">
+                        <views:PasswordResetView/>
+                    </DataTemplate>
+
                 </ContentControl.Resources>
             </ContentControl>
         </ScrollViewer>
