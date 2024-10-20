@@ -44,13 +44,13 @@ namespace SecretMessage.WPF
 
                     services.AddTransient<FirebaseAuthHttpMessageHandler>();
 
+                    // Register the FirebaseAuthProvider with the Firebase API Key
                     services.AddSingleton(new FirebaseAuthProvider(new FirebaseConfig(_firebaseApiKey)));
 
                     // Register the Refit client for the SecretMessage API
                     services.AddRefitClient<IGetSecretMessageQuery>()
                         .ConfigureHttpClient(c => c.BaseAddress = new Uri(secretMessageApiBaseUrl))
                         .AddHttpMessageHandler<FirebaseAuthHttpMessageHandler>();
-
 
                     services.AddSingleton<NavigationStore>();
                     services.AddSingleton<ModalNavigationStore>();
@@ -83,7 +83,10 @@ namespace SecretMessage.WPF
                             services.GetRequiredService<NavigationStore>(),
                             () => HomeViewModel.LoadHomeViewModel(
                                 services.GetRequiredService<AuthenticationStore>(),
-                                services.GetRequiredService<IGetSecretMessageQuery>())));
+                                services.GetRequiredService<IGetSecretMessageQuery>(),
+                                services.GetRequiredService<NavigationService<LoginViewModel>>())));
+
+
 
                     services.AddSingleton<MainViewModel>();
 

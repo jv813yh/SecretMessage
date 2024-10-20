@@ -24,7 +24,17 @@ namespace SecretMessage.WPF.Stores
         // Get a fresh auth token
         public async Task<FirebaseAuthLink> GetFreshAuthAsync()
         {
+            if (_firebaseAuthLink == null)
+            {
+                return null;
+            }
+
             return await _firebaseAuthLink.GetFreshAuthAsync();
+        }
+
+        public void Logout()
+        {
+            _firebaseAuthLink = null;
         }
     }
 }
