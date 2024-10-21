@@ -62,7 +62,8 @@ namespace SecretMessage.WPF.Commands
                 await _firebaseAuthProvider.CreateUserWithEmailAndPasswordAsync(
                     _registerViewModel.Email, 
                     _registerViewModel.Password, 
-                    _registerViewModel.Username);
+                    _registerViewModel.Username,
+                    true);
 
                 MessageBox.Show("Successfully registered!", "Success",
                                        MessageBoxButton.OK, MessageBoxImage.Information);

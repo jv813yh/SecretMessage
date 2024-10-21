@@ -77,20 +77,38 @@
                            Grid.Column="0"/>
 
 
-                <Border Margin="10"
-                        Grid.Column="1"
-                        Width="20">
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Setter Property="Background" Value="Red"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsEmailVerified}" Value="True">
-                                    <Setter Property="Background" Value="Green"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-                </Border>
+                <StackPanel Orientation="Horizontal"
+                            Grid.Column="1">
+                                <Border Margin="5"
+                                        Width="20"
+                                        Height="20">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="Red"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsEmailVerified}" Value="True">
+                                                    <Setter Property="Background" Value="Green"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                </Border>
+
+                                <Button Content="(verify email)"
+                                        Command="{Binding SendEmailVerificationCommand}">
+                                        <Button.Style>
+                                            <Style BasedOn="{StaticResource TransparentButton}" TargetType="Button">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsEmailVerified}" Value="False">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                        <Setter Property="Foreground" Value="Blue"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                </Button>
+                </StackPanel>
 
             </Grid>
 

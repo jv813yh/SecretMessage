@@ -45,7 +45,7 @@ namespace SecretMessage.WPF.Stores
                      await UpdateFreshAuthAsync();
                 }
                 else
-                {
+                { 
                     return;
                 }
             }
@@ -69,6 +69,24 @@ namespace SecretMessage.WPF.Stores
             // Save the Firebase token to the user's settings
             SaveAuthenticationState(_currentFirebaseAuthLink);
 
+        }
+
+        /// <summary>
+        /// Send verification email to the user
+        /// </summary>
+        /// <returns></returns>
+        public async Task SendVerificationEmailAsync()
+        {
+            if (_currentFirebaseAuthLink == null)
+            {
+                throw new Exception("User is not authenticated");
+            }
+
+            // Update fresh auth token
+            await UpdateFreshAuthAsync();
+
+            // Send the verification email
+            await _firebaseAuthProvider.SendEmailVerificationAsync(_currentFirebaseAuthLink.FirebaseToken);
         }
 
         public string? GetFirebaseToken()
