@@ -6,13 +6,13 @@ namespace SecretMessage.WPF.Stores
     public class AuthenticationStore
     {
         private readonly FirebaseAuthProvider _firebaseAuthProvider;
-        private FirebaseAuthLink _firebaseAuthLink;
+        private FirebaseAuthLink _currentFirebaseAuthLink;
 
         public User? User 
-            => _firebaseAuthLink?.User;
+            => _currentFirebaseAuthLink?.User;
 
         public bool IsLoggedIn
-            => (!_firebaseAuthLink?.IsExpired()) ?? false;
+            => (!_currentFirebaseAuthLink?.IsExpired()) ?? false;
 
 
         public AuthenticationStore(FirebaseAuthProvider firebaseAuthProvider)
@@ -24,10 +24,10 @@ namespace SecretMessage.WPF.Stores
         {
             // Sign in with the email and password
             // Get the Firebase token
-            _firebaseAuthLink = await _firebaseAuthProvider.SignInWithEmailAndPasswordAsync(email, password);
+            _currentFirebaseAuthLink = await _firebaseAuthProvider.SignInWithEmailAndPasswordAsync(email, password);
 
             // Save the Firebase token to the user's settings
-            SaveAuthenticationState(_firebaseAuthLink);
+            SaveAuthenticationState(_currentFirebaseAuthLink);
         }
 
         public async Task InitializeAsync()
@@ -40,9 +40,9 @@ namespace SecretMessage.WPF.Stores
 
                 if (firebaseAuth != null)
                 {
-                     await UpdateFreshAuthAsync();
+                    _currentFirebaseAuthLink = new FirebaseAuthLink(_firebaseAuthProvider, firebaseAuth);
 
-                    _firebaseAuthLink = new FirebaseAuthLink(_firebaseAuthProvider, firebaseAuth);
+                     await UpdateFreshAuthAsync();
                 }
                 else
                 {
@@ -59,26 +59,26 @@ namespace SecretMessage.WPF.Stores
         // Get a fresh auth token
         public async Task UpdateFreshAuthAsync()
         {
-            if (_firebaseAuthLink == null)
+            if (_currentFirebaseAuthLink == null)
             {
                 return;
             }
 
-            _firebaseAuthLink = await _firebaseAuthLink.GetFreshAuthAsync();
+            _currentFirebaseAuthLink = await _currentFirebaseAuthLink.GetFreshAuthAsync();
 
             // Save the Firebase token to the user's settings
-            SaveAuthenticationState(_firebaseAuthLink);
+            SaveAuthenticationState(_currentFirebaseAuthLink);
 
         }
 
         public string? GetFirebaseToken()
         {
-            return _firebaseAuthLink?.FirebaseToken;
+            return _currentFirebaseAuthLink?.FirebaseToken;
         }
 
         public void Logout()
         {
-            _firebaseAuthLink = null;
+            _currentFirebaseAuthLink = null;
 
             // Clear the Firebase token from the user's settings
             ClearAuthenticationState();
@@ -90,7 +90,6 @@ namespace SecretMessage.WPF.Stores
             string fireBaseAuthLinkJson = JsonSerializer.Serialize(firebaseAuthLink);
 
             // Set the JSON to the user's settings,
-            // set the expiration time and save the settings
             Properties.Settings.Default.FirebaseAuthLink = fireBaseAuthLinkJson;
             Properties.Settings.Default.Save();
         }

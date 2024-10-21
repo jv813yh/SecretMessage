@@ -13,6 +13,7 @@
         MaxWidth="1000"
         MinWidth="400"
         MinHeight="450"
+        WindowStartupLocation="CenterScreen"
         Icon="/Images/secretMessage.png">
     
     <Grid>
@@ -37,6 +38,10 @@
 
                     <DataTemplate DataType="{x:Type viewModels:PasswordResetViewModel}">
                         <views:PasswordResetView/>
+                    </DataTemplate>
+
+                    <DataTemplate DataType="{x:Type viewModels:ProfileViewModel}">
+                        <views:ProfileView/>
                     </DataTemplate>
 
                 </ContentControl.Resources>
