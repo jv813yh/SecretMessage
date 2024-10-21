@@ -72,6 +72,23 @@ namespace SecretMessage.WPF.Stores
         }
 
         /// <summary>
+        /// Delete the user's account
+        /// </summary>
+        /// <returns></returns>
+        public async Task DeleteAccount()
+        {
+            if (_currentFirebaseAuthLink == null)
+            {
+                return;
+            }
+
+            await _firebaseAuthProvider.DeleteUserAsync(_currentFirebaseAuthLink.FirebaseToken);
+
+            // Clear the Firebase token from the user's settings
+            ClearAuthenticationState();
+        }
+
+        /// <summary>
         /// Send verification email to the user
         /// </summary>
         /// <returns></returns>

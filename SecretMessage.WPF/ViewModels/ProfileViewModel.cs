@@ -21,12 +21,16 @@ namespace SecretMessage.WPF.ViewModels
 
         public ICommand NavigateHomeCommand { get; }
         public ICommand SendEmailVerificationCommand { get; }
+        public ICommand DeleteAccountCommand { get; }
 
-        public ProfileViewModel(AuthenticationStore authenticationStore, INavigationService navigateToHomeViewModel)
+        public ProfileViewModel(AuthenticationStore authenticationStore, 
+                                INavigationService navigateToHomeViewModel,
+                                INavigationService navigateToLoginViewModel)
         {
             _authenticationStore = authenticationStore;
             NavigateHomeCommand = new NavigateCommand(navigateToHomeViewModel);
             SendEmailVerificationCommand = new SendEmailVerificationCommand(authenticationStore);
+            DeleteAccountCommand = new DeleteAccountCommand(authenticationStore, navigateToLoginViewModel); 
         }
     }
 }

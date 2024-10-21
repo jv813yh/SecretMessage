@@ -31,6 +31,7 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
@@ -115,7 +116,12 @@
             <Button Grid.Row="3"
                     Content="Done"
                     Command="{Binding NavigateHomeCommand}"
-                    Margin="20"/>
+                    Margin="10"/>
+
+            <Button Grid.Row="4"
+                    Content="Delete the account"
+                    Command="{Binding DeleteAccountCommand}"
+                    Margin="10"/>
         </Grid>
 
     </Grid>

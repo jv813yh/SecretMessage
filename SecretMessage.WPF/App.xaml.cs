@@ -102,7 +102,8 @@ namespace SecretMessage.WPF
                         services.GetRequiredService<NavigationStore>(),
                         () => new ProfileViewModel(
                             services.GetRequiredService<AuthenticationStore>(),
-                            services.GetRequiredService<NavigationService<HomeViewModel>>())));
+                            services.GetRequiredService<NavigationService<HomeViewModel>>(),
+                            services.GetRequiredService<NavigationService<LoginViewModel>>())));
 
 
                     serviceCollection.AddSingleton<MainViewModel>();
