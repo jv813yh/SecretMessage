@@ -1,14 +1,10 @@
 ﻿using Firebase.Auth;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MVVMEssentials.Services;
-using MVVMEssentials.Stores;
 using MVVMEssentials.ViewModels;
 using Refit;
 using SecretMessage.WPF.HostBuilders;
-using SecretMessage.WPF.Http;
-using SecretMessage.WPF.Queries;
 using SecretMessage.WPF.Stores;
 using SecretMessage.WPF.ViewModels;
 using System.Windows;
