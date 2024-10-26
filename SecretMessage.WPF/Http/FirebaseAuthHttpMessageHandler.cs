@@ -1,5 +1,4 @@
-﻿using Firebase.Auth;
-using SecretMessage.WPF.Stores;
+﻿using SecretMessage.WPF.Stores;
 using System.Net.Http;
 using System.Net.Http.Headers;
 

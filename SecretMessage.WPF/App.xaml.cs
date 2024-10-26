@@ -47,6 +47,13 @@ namespace SecretMessage.WPF
             base.OnStartup(e);
         }
 
+        protected override void OnExit(ExitEventArgs e)
+        {
+            _host.Dispose();
+
+            base.OnExit(e);
+        }
+
         private async Task InitializeAppAsync()
         {
             try
